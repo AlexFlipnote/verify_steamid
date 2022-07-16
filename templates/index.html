@@ -88,5 +88,11 @@
     <a class="btn emerald-dropshadow white-text" href="/finalize">Verify</a>
   </div>
   {% endif %}
+
+  <p class="git-revision">
+    Git revision: <b><a href="https://github.com/FestiveWorld/verify_steamid/commit/{{ git_rev }}" target="_blank" class="sun-flower-text">{{ git_rev }}</a></b>
+    <i>({{ git_commit }})</i>
+  </p>
+
 </section>
 {% endblock %}

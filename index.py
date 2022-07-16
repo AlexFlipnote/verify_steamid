@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import requests
+import subprocess
 import time
 
 from urllib import parse
@@ -10,6 +11,10 @@ from quart import Quart, session, redirect, url_for, render_template, request, a
 from utils.postgresql import Table
 from bs4 import BeautifulSoup
 from quart_discord import DiscordOAuth, NotSignedIn
+
+git_log = subprocess.getoutput('git log -1 --pretty=format:"%h %s" --abbrev-commit').split(" ")
+git_rev = git_log[0]
+git_commit = " ".join(git_log[1:])
 
 with open("./config.json", "r") as f:
     config = json.load(f)
@@ -112,7 +117,7 @@ async def index():
 
     return await render_template(
         "index.html", discord=discord_info(), steam=steam_info(),
-        verify_data=verify_data
+        verify_data=verify_data, git_rev=git_rev, git_commit=git_commit
     )
 
 

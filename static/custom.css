@@ -34,6 +34,14 @@
   margin-top: 2em;
 }
 
+.git-revision {
+  text-align: right;
+  width: 100%;
+  margin: 0;
+  padding-bottom: 2em;
+  letter-spacing: 2px;
+}
+
 .me-background {
   position: absolute;
   top: 0;
