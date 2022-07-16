@@ -1,0 +1,23 @@
+.top-info {
+  margin-top: 3em;
+  margin-bottom: 2em;
+}
+
+.verify-submit-container {
+  margin-top: 2em;
+}
+
+.me .title { font-size: 2rem; }
+.me .undertitle { font-size: 1rem; }
+
+.me .image-title {
+  border-radius: 5px;
+  height: 5em;
+  width: 5em;
+}
+
+@media (max-width: 550px) {
+  .col-xs-6 {
+    margin: 1.5em 0;
+  }
+}

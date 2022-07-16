@@ -1,0 +1,79 @@
+{% extends "_layout.html" %}
+{% block content %}
+<section class="container text-center">
+  <div class="top-info">
+    <h1 class="sun-flower-text">Festive World: Discord verification</h1>
+
+    <div class="buttons">
+      <a href="https://discord.gg/NmKe2n4MvV" class="btn discord-dropshadow white-text">Discord server</a>
+      {% if discord or steam %}
+        <a href="/logout" class="btn alizarin-dropshadow white-text">Logout</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="flex-grid">
+    <div class="col-xs-6">
+      {% if discord %}
+      <section class="me discord-dropshadow">
+        <h1 class="no-margin">Discord information</h1>
+        <div class="avatar-container">
+          <img draggable="false" src="https://cdn.discordapp.com/avatars/{{ discord.id }}/{{ discord.avatar }}.png"
+            class="image-title" />
+        </div>
+        <div class="unset">
+          <h1 class="title monospace">{{ discord }}</h1>
+          <p class="undertitle monospace">{{ discord.id }}</p>
+        </div>
+      </section>
+      {% else %}
+      <a href="/login/discord" class="btn discord-dropshadow white-text">
+        Login with Discord
+      </a>
+      {% endif %}
+    </div>
+
+    <div class="col-xs-6">
+      {% if steam %}
+      <section class="me steam-dropshadow">
+        <h1 class="no-margin">Steam information</h1>
+        <div class="avatar-container">
+          <img draggable="false" src="{{ steam.avatar }}" class="image-title" />
+        </div>
+        <div class="unset">
+          <h1 class="title monospace">{{ steam.name }}</h1>
+          <p class="undertitle monospace">
+            <a href="https://steamcommunity.com/profiles/{{ steam.commid }}" class="peter-river-text">
+              {{ steam.commid }}
+            </a>
+          </p>
+        </div>
+      </section>
+      {% else %}
+      <a href="/login/steam">
+        <img src="/static/steam_login.png" alt="Steam Login" />
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if verify_data %}
+  <div class="verify-submit-container box-container primary-dropshadow">
+    <h1 class="no-margin">Verification already done</h1>
+    <p>
+      You're already verified and have access to our Discord server. Enjoy your stay 💝
+    </p>
+  </div>
+  {% elif steam and discord %}
+  <div class="verify-submit-container box-container primary-dropshadow">
+    <h1 class="no-margin">Congratulations 🎉</h1>
+    <p>
+      You have successfully verified your Discord and Steam account.<br>
+      You can now click the button below to submit your information to the Discord server.<br>
+      Welcome to Festive World 💝
+    </p>
+    <a class="btn emerald-dropshadow white-text" href="/finalize">Verify</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+  "port": 8080,
+  "postgres_url": "",
+  "discord_guild_id": 1337,
+  "discord_role_id": 1337,
+  "discord_channel_id": 1337,
+  "discord_client_id": 1337,
+  "discord_bot_token": "",
+  "discord_client_secret": "",
+  "discord_redirect_uri": "",
+  "steam_openid_url": "",
+  "steam_web_api_key": "",
+  "openid_ns": "",
+  "openid_identity": "",
+  "openid_claimed_id": "",
+  "openid_mode": "",
+  "openid_return_to": "",
+  "openid_realm": ""
+}
