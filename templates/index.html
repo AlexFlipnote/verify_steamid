@@ -13,10 +13,10 @@
   </div>
 
   <div class="flex-grid">
-    <div class="col-xs-6 card">
+    <div class="col-xs-6">
       {% if discord %}
       <section class="me discord-dropshadow">
-        <div class="me-background" style="background-image: url('https://cdn.discordapp.com/banners/{{ discord.id }}/{{ discord.banner }}.png?size=512')"></div>
+        <div class="me-background" style="background-image: url('https://cdn.discordapp.com/banners/{{ discord.id }}/{{ discord.banner }}.{{ discord_banner_type }}?size=512')"></div>
         <div class="me-content">
           <div class="avatar-container">
             <img draggable="false" src="https://cdn.discordapp.com/avatars/{{ discord.id }}/{{ discord.avatar }}.png"
@@ -42,7 +42,15 @@
     <div class="col-xs-6">
       {% if steam %}
       <section class="me steam-dropshadow">
-        <div class="me-background" style="background-image: url('{{ steam.background }}')"></div>
+        {% if steam.background_video_mp4 %}
+          <div class="me-background">
+            <video playsinline autoplay muted loop poster="{{ steam.background_video_static or steam.background_static }}">
+              <source src="{{ steam.background_video_mp4 }}" type="video/mp4">
+            </video>
+          </div>
+        {% else %}
+          <div class="me-background" style="background-image: url('{{ steam.background_video_static or steam.background_static }}')"></div>
+        {% endif %}
         <div class="me-content">
           <div class="avatar-container">
             <img draggable="false" src="{{ steam.avatar }}" class="image-title" />

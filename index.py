@@ -75,22 +75,44 @@ def fetch_steam_session(data: dict):
     except Exception:
         abort(500, "Steam API failed.")
 
-    profile_bg = None
+    profile_video_static = None
+    profile_static = None
+    profile_video_mp4 = None
+
     try:
-        r_steam = requests.get(data["response"]["players"][0]["profileurl"])
-        html = BeautifulSoup(r_steam.text, "html.parser")
+        html_steam = requests.get(data["response"]["players"][0]["profileurl"])
+    except Exception:
+        html_steam = None
+
+    if html_steam:
+        html = BeautifulSoup(html_steam.text, "html.parser")
         get_video = html.find("video")
         if get_video:
-            profile_bg = get_video.attrs.get("poster", None)
-    except Exception:
-        pass
+            profile_video_static = get_video.attrs.get("poster", None)
+
+            if profile_video_static:
+                find_mp4 = get_video.find("source", {"type": "video/mp4"})
+                if find_mp4:
+                    profile_video_mp4 = find_mp4.attrs.get("src", None)
+
+        find_static = html.find(
+            "div", {"class": ["no_header", "profile_page", "has_profile_background"]}
+        )
+
+        if find_static:
+            temp = find_static.attrs.get("style", None)
+            find_url = re.compile(r"url\(.*'(.*)'.*\);").search(temp)
+            if find_url:
+                profile_static = find_url.group(1)
 
     session["steam"] = {
         "commid": int(steamid_64.group(1)),
         "steamid": commid_to_steamid(steamid_64.group(1)),
         "name": data["response"]["players"][0]["personaname"],
         "avatar": data["response"]["players"][0]["avatarfull"],
-        "background": profile_bg
+        "background_video_mp4": profile_video_mp4,
+        "background_video_static": profile_video_static,
+        "background_static": profile_static,
     }
 
 
@@ -113,11 +135,16 @@ async def is_verified():
 
 @app.route("/")
 async def index():
+    discord_data = discord_info()
+    discord_banner_type = "png"
     verify_data = await is_verified()
 
+    if discord_data and str(discord_data.banner).startswith("a_"):
+        discord_banner_type = "gif"
+
     return await render_template(
-        "index.html", discord=discord_info(), steam=steam_info(),
-        verify_data=verify_data, git_rev=git_rev, git_commit=git_commit
+        "index.html", discord=discord_data, discord_banner_type=discord_banner_type,
+        steam=steam_info(), verify_data=verify_data, git_rev=git_rev, git_commit=git_commit
     )
 
 
