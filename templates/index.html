@@ -5,7 +5,7 @@
     <h1 class="sun-flower-text">Festive World: Discord verification</h1>
 
     <div class="buttons">
-      <a href="https://discord.gg/NmKe2n4MvV" class="btn discord-dropshadow white-text">Discord server</a>
+      <a href="https://discord.gg/NmKe2n4MvV" target="_blank" class="btn discord-dropshadow white-text">Discord server</a>
       {% if discord or steam %}
         <a href="/logout" class="btn alizarin-dropshadow white-text">Logout</a>
       {% endif %}
@@ -43,7 +43,7 @@
         <div class="unset">
           <h1 class="title monospace">{{ steam.name }}</h1>
           <p class="undertitle monospace">
-            <a href="https://steamcommunity.com/profiles/{{ steam.commid }}" class="peter-river-text">
+            <a href="https://steamcommunity.com/profiles/{{ steam.commid }}" target="_blank" class="peter-river-text">
               {{ steam.commid }}
             </a>
           </p>
