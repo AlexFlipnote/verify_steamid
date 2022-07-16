@@ -140,18 +140,6 @@ async def request_verification():
             message="You are not logged in on Discord or Steam..."
         )
 
-    try:
-        await app.pool.execute(
-            "INSERT INTO users (user_id, steamid_32, steamid_64) VALUES ($1, $2, $3)",
-            discord_user.id, steam_user["steamid"], steam_user["commid"]
-        )
-    except Exception:
-        return await render_template(
-            "onepage.html",
-            title="Verified..? 🎉",
-            message="You're probably already verified..."
-        )
-
     headers = {
         "Authorization": f"Bot {config['discord_bot_token']}",
         "Content-Type": "application/json"
@@ -167,6 +155,18 @@ async def request_verification():
             "onepage.html",
             title="Error",
             message="Failed to remove the role from the Discord server... Are you inside the Discord server even?"
+        )
+
+    try:
+        await app.pool.execute(
+            "INSERT INTO users (user_id, steamid_32, steamid_64) VALUES ($1, $2, $3)",
+            discord_user.id, steam_user["steamid"], steam_user["commid"]
+        )
+    except Exception:
+        return await render_template(
+            "onepage.html",
+            title="Verified..? 🎉",
+            message="You're probably already verified..."
         )
 
     requests.post(
