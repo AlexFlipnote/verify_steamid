@@ -1,2 +1,3 @@
 git+https://github.com/xelA/quart_discord@master
 quart
+beautifulsoup4

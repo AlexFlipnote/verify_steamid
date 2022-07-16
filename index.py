@@ -8,7 +8,8 @@ import time
 from urllib import parse
 from quart import Quart, session, redirect, url_for, render_template, request, abort
 from utils.postgresql import Table
-from quart_discord import DiscordOAuth
+from bs4 import BeautifulSoup
+from quart_discord import DiscordOAuth, NotSignedIn
 
 with open("./config.json", "r") as f:
     config = json.load(f)
@@ -69,11 +70,22 @@ def fetch_steam_session(data: dict):
     except Exception:
         abort(500, "Steam API failed.")
 
+    profile_bg = None
+    try:
+        r_steam = requests.get(data["response"]["players"][0]["profileurl"])
+        html = BeautifulSoup(r_steam.text, "html.parser")
+        get_video = html.find("video")
+        if get_video:
+            profile_bg = get_video.attrs.get("poster", None)
+    except Exception:
+        pass
+
     session["steam"] = {
         "commid": int(steamid_64.group(1)),
         "steamid": commid_to_steamid(steamid_64.group(1)),
         "name": data["response"]["players"][0]["personaname"],
-        "avatar": data["response"]["players"][0]["avatarfull"]
+        "avatar": data["response"]["players"][0]["avatarfull"],
+        "background": profile_bg
     }
 
 
@@ -250,6 +262,12 @@ async def discord_callback():
     if "redirect_url" in session:
         return redirect(session["redirect_url"])
     return redirect(url_for(".index"))
+
+
+@app.errorhandler(NotSignedIn)
+async def redirect_unauthorized(e):
+    session["redirect_url"] = request.url
+    return redirect(url_for(".discord_login"))
 
 
 app.run(port=config["port"])
