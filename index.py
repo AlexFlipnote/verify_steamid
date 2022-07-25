@@ -101,9 +101,10 @@ def fetch_steam_session(data: dict):
 
         if find_static:
             temp = find_static.attrs.get("style", None)
-            find_url = re.compile(r"url\(.*'(.*)'.*\);").search(temp)
-            if find_url:
-                profile_static = find_url.group(1)
+            if temp:
+                find_url = re.compile(r"url\(.*'(.*)'.*\);").search(temp)
+                if find_url:
+                    profile_static = find_url.group(1)
 
     session["steam"] = {
         "commid": int(steamid_64.group(1)),
