@@ -217,7 +217,7 @@ async def request_verification():
     requests.post(
         f"https://discord.com/api/v10/channels/{config['discord_channel_id']}/messages",
         headers=headers, json={
-            "content": f"User <@!{discord_user.id}> has joined **Festive World** <a:cookiee:993317674815856742>",
+            "content": f"User <@!{discord_user.id}> has verified their SteamID to **Festive World** <a:cookiee:993317674815856742>",
             "allowed_mentions": {"parse": ["users"]}
         }
     )
